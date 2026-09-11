@@ -21,6 +21,7 @@ type Peer interface {
 	DisconnectLater(data uint32)
 
 	SendBytes(data []byte, channel uint8, flags PacketFlags) error
+	SendBytesFast(data []byte, channel uint8, isReliable bool) error
 	SendString(str string, channel uint8, flags PacketFlags) error
 	SendPacket(packet Packet, channel uint8) error
 
