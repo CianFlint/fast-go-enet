@@ -103,6 +103,37 @@ func (peer enetPeer) SendBytes(data []byte, channel uint8, flags PacketFlags) er
 	return peer.SendPacket(packet, channel)
 }
 
+func (p *Peer) SendBytesFast(data []byte, channel uint8, isReliable bool) error {
+	if len(data) == 0 {
+		return errors.New("packet empty")
+	}
+
+	var flags uint32 = 0
+	if isReliable {
+		flags = 1
+	}
+
+	dataPtr := unsafe.Pointer(&data[0])
+	dataLen := C.size_t(len(data))
+
+	res := C.enet_peer_send_fast(
+		p.cPeer, 
+		C.enet_uint8(channel), 
+		dataPtr, 
+		dataLen, 
+		C.enet_uint32(flags),
+	)
+
+	switch res {
+	case 0:
+		return nil
+	case -2:
+		return errors.New("size exceeds MTU limit")
+	default:
+		return errors.New("packet queue failed")
+	}
+}
+
 func (peer enetPeer) SendString(str string, channel uint8, flags PacketFlags) error {
 	packet, err := NewPacket([]byte(str), flags)
 	if err != nil {
