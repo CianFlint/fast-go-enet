@@ -1,3 +1,3 @@
-module github.com/codecat/go-enet
+module github.com/CianFlint/fast-go-enet
 
 go 1.23
