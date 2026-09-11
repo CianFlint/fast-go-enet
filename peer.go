@@ -103,7 +103,7 @@ func (peer enetPeer) SendBytes(data []byte, channel uint8, flags PacketFlags) er
 	return peer.SendPacket(packet, channel)
 }
 
-func (p *Peer) SendBytesFast(data []byte, channel uint8, isReliable bool) error {
+func (peer enetPeer) SendBytesFast(data []byte, channel uint8, isReliable bool) error {
 	if len(data) == 0 {
 		return errors.New("packet empty")
 	}
