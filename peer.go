@@ -25,6 +25,7 @@ type Peer interface {
 	SendString(str string, channel uint8, flags PacketFlags) error
 	SendPacket(packet Packet, channel uint8) error
 	RelayPacket(packet Packet, channel uint8) error
+	MinimalTest(value int) error
 
 	// SetData sets an arbitrary value against a peer. This is useful to attach some
 	// application-specific data for future use, such as an identifier.
@@ -147,6 +148,11 @@ func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
 		(C.enet_uint8)(channel),
 		packet.(enetPacket).cPacket,
 	)
+	return nil
+}
+
+func (peer enetPeer) MinimalTest(value int) error {
+	C.enet_test_minimal(value)
 	return nil
 }
 
