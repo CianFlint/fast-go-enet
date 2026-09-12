@@ -580,6 +580,7 @@ extern  enet_uint32 enet_host_random_seed (void);
 
 ENET_API int                 enet_peer_send (ENetPeer *, enet_uint8, ENetPacket *);
 ENET_API int                 enet_peer_send_fast (ENetPeer * peer, enet_uint8 channelID, const void * data, size_t dataLength, enet_uint32 flags);
+ENET_API int                 enet_peer_relay_packet (ENetPeer *, enet_uint8, ENetPacket *);
 ENET_API ENetPacket *        enet_peer_receive (ENetPeer *, enet_uint8 * channelID);
 ENET_API void                enet_peer_ping (ENetPeer *);
 ENET_API void                enet_peer_ping_interval (ENetPeer *, enet_uint32);

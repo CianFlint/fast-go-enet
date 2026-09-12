@@ -152,6 +152,24 @@ func (peer enetPeer) SendPacket(packet Packet, channel uint8) error {
 	return nil
 }
 
+func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
+	pkt, ok := packet.(*enetPacket)
+	if !ok || pkt.cPacket == nil {
+		return errors.New("empty packet")
+	}
+
+	res := C.enet_peer_relay_packet(
+		p.cPeer,
+		C.enet_uint8(channel),
+		concretePacket.cPacket,
+	)
+
+	if res < 0 {
+		return errors.New("packet queue failed")
+	}
+	return nil
+}
+
 func (peer enetPeer) SetData(data []byte) {
 	if len(data) > math.MaxUint32 {
 		panic(fmt.Sprintf("maximum peer data length is uint32 (%d)", math.MaxUint32))
