@@ -9,7 +9,7 @@ ARG ENET_VERSION=1.3.17
 RUN apt update && \
     apt install -y autoconf libtool && \
     cd /tmp && \
-    git clone https://github.com/lsalzman/enet.git && \
+    git clone https://github.com/CianFlint/fast-enet.git && \
     cd /tmp/enet && \
     git checkout v${ENET_VERSION} && \
     autoreconf -vfi && \
