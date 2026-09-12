@@ -106,10 +106,6 @@ func (peer enetPeer) SendBytes(data []byte, channel uint8, flags PacketFlags) er
 }
 
 func (peer enetPeer) SendBytesFast(data []byte, channel uint8, isReliable bool) error {
-	if len(data) == 0 {
-		return errors.New("packet empty")
-	}
-
 	var flags uint32 = 0
 	if isReliable {
 		flags = 1
@@ -118,22 +114,14 @@ func (peer enetPeer) SendBytesFast(data []byte, channel uint8, isReliable bool) 
 	dataPtr := unsafe.Pointer(&data[0])
 	dataLen := C.size_t(len(data))
 
-	res := C.enet_peer_send_fast(
-		p.cPeer, 
-		C.enet_uint8(channel), 
+	C.enet_peer_send_fast(
+		peer.cPeer, 
+		(C.enet_uint8)(channel), 
 		dataPtr, 
 		dataLen, 
-		C.enet_uint32(flags),
+		(C.enet_uint32)(flags),
 	)
-
-	switch res {
-	case 0:
-		return nil
-	case -2:
-		return errors.New("size exceeds MTU limit")
-	default:
-		return errors.New("packet queue failed")
-	}
+	return nil
 }
 
 func (peer enetPeer) SendString(str string, channel uint8, flags PacketFlags) error {
@@ -154,20 +142,11 @@ func (peer enetPeer) SendPacket(packet Packet, channel uint8) error {
 }
 
 func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
-	pkt, ok := packet.(*enetPacket)
-	if !ok || pkt.cPacket == nil {
-		return errors.New("empty packet")
-	}
-
-	res := C.enet_peer_relay_packet(
-		p.cPeer,
-		C.enet_uint8(channel),
-		concretePacket.cPacket,
+	C.enet_peer_relay_packet(
+		peer.cPeer,
+		(C.enet_uint8)(channel),
+		packet.(enetPacket).cPacket,
 	)
-
-	if res < 0 {
-		return errors.New("packet queue failed")
-	}
 	return nil
 }
 
