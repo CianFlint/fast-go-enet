@@ -24,6 +24,7 @@ type Peer interface {
 	SendBytesFast(data []byte, channel uint8, isReliable bool) error
 	SendString(str string, channel uint8, flags PacketFlags) error
 	SendPacket(packet Packet, channel uint8) error
+	RelayPacket(packet Packet, channel uint8) error
 
 	// SetData sets an arbitrary value against a peer. This is useful to attach some
 	// application-specific data for future use, such as an identifier.
