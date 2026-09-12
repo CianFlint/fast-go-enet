@@ -1,8 +1,6 @@
 package enet
 
 // #include <enet/enet.h>
-//int enet_peer_send_fast(ENetPeer * peer, enet_uint8 channelID, const void * data, size_t dataLength, enet_uint32 flags)
-//int enet_peer_relay_packet(void* peer, unsigned char channelID, void* packet);
 import "C"
 import (
 	"encoding/binary"
