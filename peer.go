@@ -116,10 +116,10 @@ func (peer enetPeer) SendBytesFast(data []byte, channel uint8, isReliable bool) 
 	dataLen := C.size_t(len(data))
 
 	C.enet_peer_send_fast(
-		peer.cPeer, 
-		(C.enet_uint8)(channel), 
-		dataPtr, 
-		dataLen, 
+		peer.cPeer,
+		(C.enet_uint8)(channel),
+		dataPtr,
+		dataLen,
 		(C.enet_uint32)(flags),
 	)
 	return nil
@@ -152,7 +152,7 @@ func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
 }
 
 func (peer enetPeer) MinimalTest(value int) error {
-	C.enet_test_minimal(value)
+	C.enet_test_minimal((C.int)(value))
 	return nil
 }
 
