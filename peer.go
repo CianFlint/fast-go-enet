@@ -126,7 +126,7 @@ func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
 	new_pkt := C.enet_packet_create(
 		unsafe.Pointer(pkt.data),
 		pkt.dataLength,
-		(C.enet_uint32)(4),
+		(C.enet_uint32)(1),
 	)
 	C.enet_peer_send(
 		peer.cPeer,
