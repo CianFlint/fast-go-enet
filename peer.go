@@ -23,7 +23,7 @@ type Peer interface {
 	SendBytes(data []byte, channel uint8, flags PacketFlags) error
 	SendString(str string, channel uint8, flags PacketFlags) error
 	SendPacket(packet Packet, channel uint8) error
-	RelayPacket(packet Packet, channel uint8) error
+	RelayPacket(packet Packet, channel uint8, flags uint32) error
 
 	// SetData sets an arbitrary value against a peer. This is useful to attach some
 	// application-specific data for future use, such as an identifier.
@@ -121,12 +121,12 @@ func (peer enetPeer) SendPacket(packet Packet, channel uint8) error {
 	return nil
 }
 
-func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
+func (peer enetPeer) RelayPacket(packet Packet, channel uint8, flags uint32) error {
 	pkt := packet.(enetPacket).cPacket
 	new_pkt := C.enet_packet_create(
 		unsafe.Pointer(pkt.data),
 		pkt.dataLength,
-		(C.enet_uint32)(1),
+		(C.enet_uint32)(flags),
 	)
 	C.enet_peer_send(
 		peer.cPeer,
