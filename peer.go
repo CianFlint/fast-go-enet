@@ -122,11 +122,16 @@ func (peer enetPeer) SendPacket(packet Packet, channel uint8) error {
 }
 
 func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
-	packet.(enetPacket).cPacket.referenceCount++
+	pkt := packet.(enetPacket).cPacket
+	new_pkt := C.enet_packet_create(
+		unsafe.Pointer(pkt.data),
+		pkt.length,
+		(C.enet_uint32)(4)
+	)
 	C.enet_peer_send(
 		peer.cPeer,
 		(C.enet_uint8)(channel),
-		packet.(enetPacket).cPacket,
+		new_pkt,
 	)
 	return nil
 }
