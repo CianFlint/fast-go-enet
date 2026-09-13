@@ -1,3 +1,4 @@
+//go:build !windows
 /** 
  @file  unix.c
  @brief ENet Unix system specific functions
