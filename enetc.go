@@ -1,9 +1,9 @@
 package enet
 
-// #cgo !windows CFLAGS: -Ienet/include/
-// #cgo !windows LDFLAGS: -Lenet/ -lenet
-// #cgo windows CFLAGS: -Ienet/include/
-// #cgo windows LDFLAGS: -Lenet/ -lenet -lws2_32 -lwinmm
+// #cgo !windows CFLAGS: -I${SRCDIR}/enet/include/
+// #cgo !windows LDFLAGS: -L${SRCDIR}/enet/ -lenet
+// #cgo windows CFLAGS: -I${SRCDIR}/enet/include/
+// #cgo windows LDFLAGS: -L${SRCDIR}/enet/ -lenet -lws2_32 -lwinmm
 // #include <enet/enet.h>
 import "C"
 import "fmt"
