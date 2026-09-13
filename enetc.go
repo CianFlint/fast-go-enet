@@ -1,6 +1,5 @@
 package enet
 
-// #cgo !windows CFLAGS: -I${SRCDIR}/enet_linux/include/
 // #cgo !windows LDFLAGS: -lm -pthread
 // #cgo windows CFLAGS: -Ienet/include/
 // #cgo windows LDFLAGS: -Lenet/ -lenet -lws2_32 -lwinmm
