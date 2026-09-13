@@ -21,11 +21,9 @@ type Peer interface {
 	DisconnectLater(data uint32)
 
 	SendBytes(data []byte, channel uint8, flags PacketFlags) error
-	SendBytesFast(data []byte, channel uint8, isReliable bool) error
 	SendString(str string, channel uint8, flags PacketFlags) error
 	SendPacket(packet Packet, channel uint8) error
 	RelayPacket(packet Packet, channel uint8) error
-	MinimalTest(value int) error
 
 	// SetData sets an arbitrary value against a peer. This is useful to attach some
 	// application-specific data for future use, such as an identifier.
@@ -143,7 +141,8 @@ func (peer enetPeer) SendPacket(packet Packet, channel uint8) error {
 }
 
 func (peer enetPeer) RelayPacket(packet Packet, channel uint8) error {
-	C.enet_peer_relay_packet(
+	packet.cPacket.referenceCount++
+	C.enet_peer_send(
 		peer.cPeer,
 		(C.enet_uint8)(channel),
 		packet.(enetPacket).cPacket,
