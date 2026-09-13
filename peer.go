@@ -128,6 +128,9 @@ func (peer enetPeer) RelayPacket(packet Packet, channel uint8, flags uint32) err
 		pkt.dataLength,
 		(C.enet_uint32)(flags),
 	)
+	if (flags & 4) != 0 {
+		pkt.referenceCount++
+	}
 	C.enet_peer_send(
 		peer.cPeer,
 		(C.enet_uint8)(channel),
