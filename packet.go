@@ -34,6 +34,7 @@ const (
 // Packet may be sent to or received from a peer
 type Packet interface {
 	Destroy()
+	ReadData() []byte
 	GetData() []byte
 	GetFlags() PacketFlags
 }
@@ -44,6 +45,13 @@ type enetPacket struct {
 
 func (packet enetPacket) Destroy() {
 	C.enet_packet_destroy(packet.cPacket)
+}
+
+func (packet enetPacket) ReadData() []byte {
+	if packet.cPacket == nil || packet.cPacket.dataLength == 0 {
+		return nil
+	}
+	return unsafe.Slice((*byte)(unsafe.Pointer(packet.cPacket.data)), int(packet.cPacket.dataLength))
 }
 
 func (packet enetPacket) GetData() []byte {
