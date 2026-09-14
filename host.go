@@ -10,6 +10,7 @@ import (
 type Host interface {
 	Destroy()
 	Service(timeout uint32) Event
+	GetServiceTime() uint32
 
 	Connect(addr Address, channelCount int, data uint32) (Peer, error)
 
@@ -35,6 +36,13 @@ func (host *enetHost) Service(timeout uint32) Event {
 		(C.enet_uint32)(timeout),
 	)
 	return ret
+}
+
+func (host *enetHost) GetServiceTime() uint32 {
+	if host.cHost == nil {
+		return 0
+	}
+	return uint32(host.cHost.serviceTime)
 }
 
 func (host *enetHost) Connect(addr Address, channelCount int, data uint32) (Peer, error) {
