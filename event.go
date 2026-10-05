@@ -38,7 +38,7 @@ type EventRecv struct {
 
 // Event as returned by Host.Service()
 type Event interface {
-	ReadEvent() eventRecv
+	ReadEvent() EventRecv
 	GetType() EventType
 	GetPeer() Peer
 	GetChannelID() uint8
