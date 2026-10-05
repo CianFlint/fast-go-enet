@@ -2,6 +2,7 @@ package enet
 
 // #include <enet/enet.h>
 import "C"
+import "unsafe"
 
 // EventType is a type of event
 type EventType int
@@ -30,7 +31,7 @@ const (
 
 type eventRecv struct {
 	Peer      Peer
-	ConnectID uint
+	ConnectID uint32
     Packet    Packet
     Read      []byte
 }
