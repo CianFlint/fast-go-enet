@@ -31,7 +31,7 @@ const (
 
 type eventRecv struct {
 	Peer      Peer
-	ConnectID _Ctype_enet_uint32
+	ConnectID C.enet_uint32
     Packet    Packet
     Read      []byte
 }
