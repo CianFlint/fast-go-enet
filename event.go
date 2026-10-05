@@ -28,8 +28,16 @@ const (
 	EventReceive
 )
 
+type eventRecv struct {
+	Peer      Peer
+	ConnectID uint
+    Packet    Packet
+    Read      []byte
+}
+
 // Event as returned by Host.Service()
 type Event interface {
+	ReadEvent() eventRecv
 	GetType() EventType
 	GetPeer() Peer
 	GetChannelID() uint8
@@ -39,6 +47,18 @@ type Event interface {
 
 type enetEvent struct {
 	cEvent C.struct__ENetEvent
+}
+
+func (event *enetEvent) ReadEvent() eventRecv {
+	if event.cEvent.packet == nil || event.cEvent.packet.dataLength == 0 {
+		return nil
+	}
+	return eventRecv{
+		Peer: enetPeer{cPeer: event.cEvent.peer},
+		ConnectID: event.cEvent.peer.connectID,
+		Packet: enetPacket{cPacket: event.cEvent.packet},
+		Read: unsafe.Slice((*byte)(unsafe.Pointer(event.cEvent.packet.data)), int(event.cEvent.packet.dataLength)),
+	}
 }
 
 func (event *enetEvent) GetType() EventType {
