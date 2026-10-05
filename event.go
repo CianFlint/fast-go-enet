@@ -31,7 +31,7 @@ const (
 
 type eventRecv struct {
 	Peer      Peer
-	ConnectID uint32
+	ConnectID _Ctype_enet_uint32
     Packet    Packet
     Read      []byte
 }
@@ -52,7 +52,7 @@ type enetEvent struct {
 
 func (event *enetEvent) ReadEvent() eventRecv {
 	if event.cEvent.packet == nil || event.cEvent.packet.dataLength == 0 {
-		return nil
+		return eventRecv{}
 	}
 	return eventRecv{
 		Peer: enetPeer{cPeer: event.cEvent.peer},
